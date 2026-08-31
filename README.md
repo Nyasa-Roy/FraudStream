@@ -20,7 +20,9 @@ The repository is being implemented incrementally according to the [full SRS](do
 - Phase 12 foundation: WebSocket transaction and alert channels
 - Phase 4/12: Next.js live operations dashboard
 - Phase 13: containerized API/frontend and CI workflow
-- Next: monitoring and load testing
+- Phase 13: Prometheus/Grafana request metrics
+- Phase 14 foundation: repeatable HTTP benchmark runner
+- Next: end-to-end Kafka benchmark and optimization
 
 ## Quick start: transaction generator
 

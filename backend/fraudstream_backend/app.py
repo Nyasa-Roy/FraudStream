@@ -1,15 +1,18 @@
 from __future__ import annotations
 
 import os
+import time
 from datetime import datetime
 from decimal import Decimal
 from typing import Any
 
 import psycopg
-from fastapi import FastAPI, HTTPException, Query, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, HTTPException, Query, Response, WebSocket, WebSocketDisconnect
+from starlette.middleware.base import BaseHTTPMiddleware
 from pydantic import BaseModel, Field
 
 from .realtime import ConnectionManager
+from .metrics import LATENCY, REQUESTS, metrics_payload
 
 DATABASE_URL = os.getenv(
     "DATABASE_URL", "postgresql://fraudstream:fraudstream@localhost:5432/fraudstream"
@@ -18,6 +21,19 @@ DATABASE_URL = os.getenv(
 app = FastAPI(title="FraudStream API", version="0.1.0")
 transactions_channel = ConnectionManager()
 alerts_channel = ConnectionManager()
+
+
+class MetricsMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request, call_next):
+        started = time.perf_counter()
+        response = await call_next(request)
+        path = request.url.path
+        REQUESTS.labels(request.method, path, str(response.status_code)).inc()
+        LATENCY.labels(request.method, path).observe(time.perf_counter() - started)
+        return response
+
+
+app.add_middleware(MetricsMiddleware)
 
 
 class TransactionInput(BaseModel):
@@ -44,6 +60,12 @@ def health() -> dict[str, str]:
     except psycopg.Error as exc:
         raise HTTPException(status_code=503, detail="database unavailable") from exc
     return {"status": "ok"}
+
+
+@app.get("/metrics", include_in_schema=False)
+def metrics() -> Response:
+    payload, content_type = metrics_payload()
+    return Response(content=payload, media_type=content_type)
 
 
 @app.post("/transactions", status_code=201)
