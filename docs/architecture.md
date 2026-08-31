@@ -15,3 +15,4 @@ flowchart LR
 
 The first increment deliberately keeps generation independent of Kafka. This makes the event contract testable and provides deterministic JSONL fixtures before infrastructure is introduced.
 
+The persistence foundation is available locally through `infrastructure/docker-compose.yml`; PostgreSQL initializes the six SRS tables from the numbered SQL migration and Redis is ready for behavioural state.

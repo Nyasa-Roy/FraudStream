@@ -8,7 +8,8 @@ The repository is being implemented incrementally according to the [full SRS](do
 
 - Phase 0: repository structure and local configuration
 - Phase 1: deterministic, configurable synthetic transaction generator
-- Next: PostgreSQL schema and FastAPI API
+- Phase 2: PostgreSQL schema and local Postgres/Redis services
+- Next: FastAPI API
 
 ## Quick start: transaction generator
 
@@ -45,5 +46,6 @@ pytest
 ruff check .
 ```
 
-All data is synthetic; no real payment information is required or stored.
+Start local persistence services with `docker compose -f infrastructure/docker-compose.yml up -d`.
 
+All data is synthetic; no real payment information is required or stored.
