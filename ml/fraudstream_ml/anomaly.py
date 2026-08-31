@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -21,10 +22,9 @@ class AnomalyModel:
     def score(self, features: pd.DataFrame) -> list[float]:
         """Return larger values for more anomalous observations."""
         raw = -self.model.score_samples(features[ANOMALY_COLUMNS])
-        low, high = float(raw.min()), float(raw.max())
-        if high == low:
-            return [0.0] * len(raw)
-        return ((raw - low) / (high - low)).clip(0, 1).tolist()
+        # Isolation Forest's raw scores are stable across inference batches;
+        # per-batch min/max normalization would make a singleton score zero.
+        return [1 / (1 + math.exp(-12 * (float(value) - 0.5))) for value in raw]
 
     def save(self, path: str | Path) -> None:
         path = Path(path)
