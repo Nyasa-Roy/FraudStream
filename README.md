@@ -13,7 +13,8 @@ The repository is being implemented incrementally according to the [full SRS](do
 - Phase 5: Kafka transport and stream-processing worker
 - Phase 6: Redis-backed behavioural feature extraction
 - Phase 11 foundation: transparent weighted risk engine and explanations
-- Next: supervised/anomaly ML model training and inference persistence
+- Phase 7: reproducible logistic-regression ML baseline and evaluation metrics
+- Next: anomaly detection, model persistence, and inference integration
 
 ## Quick start: transaction generator
 

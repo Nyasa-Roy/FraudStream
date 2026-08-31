@@ -10,9 +10,13 @@ requires-python = ">=3.11"
 dependencies = [
   "fastapi>=0.115,<1",
   "kafka-python-ng>=2.2,<3",
+  "joblib>=1.4,<2",
+  "numpy>=2,<3",
+  "pandas>=2,<3",
   "pydantic>=2.7,<3",
   "psycopg[binary]>=3.2,<4",
   "redis>=5,<6",
+  "scikit-learn>=1.5,<2",
 ]
 
 [project.optional-dependencies]
@@ -25,7 +29,7 @@ dev = [
 fraudstream-producer = "fraudstream_producer.__main__:main"
 
 [tool.setuptools.packages.find]
-where = ["producer", "backend"]
+where = ["producer", "backend", "ml"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
