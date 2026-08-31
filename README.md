@@ -25,7 +25,8 @@ The repository is being implemented incrementally according to the [full SRS](do
 - Phase 14 baseline: live API benchmark recorded in [docs/benchmark-results.md](docs/benchmark-results.md)
 - Phase 5/9: Compose stream processor connects Kafka, Redis, ML inference, and PostgreSQL
 - Phase 14: Kafka-to-prediction benchmark runner
-- Next: optimize measured end-to-end throughput and latency
+- Phase 14: connection reuse improved the local benchmark to 34.33 TPS / 473 ms P95
+- Next: larger multi-partition load tests and production deployment
 
 ## Quick start: transaction generator
 

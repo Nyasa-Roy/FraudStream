@@ -21,3 +21,14 @@ Measured against the running Kafka, Redis, PostgreSQL, and stream-processor cont
 | 20 | 20 | 4.62 TPS | 1,801 ms | 3,976 ms | 4,232 ms |
 
 This baseline includes Kafka publication, consumer processing, Redis feature extraction, model inference, and PostgreSQL prediction persistence. The current serial worker path is above the SRS latency target and is the next optimization target.
+
+## Connection reuse optimization
+
+After reusing one PostgreSQL connection for the worker lifetime, the same 20-event benchmark measured:
+
+| Version | Throughput | P50 | P95 | P99 |
+|---|---:|---:|---:|---:|
+| Before reuse | 4.62 TPS | 1,801 ms | 3,976 ms | 4,232 ms |
+| After reuse | 34.33 TPS | 473 ms | 473 ms | 473 ms |
+
+This is a local development measurement; production capacity still requires larger runs and multi-partition consumers.
