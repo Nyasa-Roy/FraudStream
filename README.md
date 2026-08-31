@@ -16,7 +16,8 @@ The repository is being implemented incrementally according to the [full SRS](do
 - Phase 7: reproducible logistic-regression ML baseline and evaluation metrics
 - Phase 10: Isolation Forest anomaly detector
 - Phase 9/11: combined real-time inference and explainable risk decision
-- Next: prediction persistence and high-risk alert generation
+- Phase 9/12 foundation: atomic prediction persistence and HIGH-risk alerts
+- Next: WebSocket delivery and dashboard integration
 
 ## Quick start: transaction generator
 
