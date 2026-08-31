@@ -14,7 +14,8 @@ The repository is being implemented incrementally according to the [full SRS](do
 - Phase 6: Redis-backed behavioural feature extraction
 - Phase 11 foundation: transparent weighted risk engine and explanations
 - Phase 7: reproducible logistic-regression ML baseline and evaluation metrics
-- Next: anomaly detection, model persistence, and inference integration
+- Phase 10: Isolation Forest anomaly detector
+- Next: model persistence and real-time inference integration
 
 ## Quick start: transaction generator
 
