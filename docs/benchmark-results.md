@@ -12,3 +12,12 @@ python benchmarks/run_http_benchmark.py --count 100 --workers 10
 
 This is an HTTP API baseline, not the SRS end-to-end Kafka-to-alert benchmark. It exceeds the initial `<500 ms P95` target and establishes the optimization baseline. The initial run also confirmed that invalid benchmark IDs correctly receive HTTP 422 validation responses.
 
+## Kafka-to-prediction baseline
+
+Measured against the running Kafka, Redis, PostgreSQL, and stream-processor containers:
+
+| Events | Completed | Throughput | P50 | P95 | P99 |
+|---:|---:|---:|---:|---:|---:|
+| 20 | 20 | 4.62 TPS | 1,801 ms | 3,976 ms | 4,232 ms |
+
+This baseline includes Kafka publication, consumer processing, Redis feature extraction, model inference, and PostgreSQL prediction persistence. The current serial worker path is above the SRS latency target and is the next optimization target.
