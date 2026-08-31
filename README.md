@@ -23,6 +23,7 @@ The repository is being implemented incrementally according to the [full SRS](do
 - Phase 13: Prometheus/Grafana request metrics
 - Phase 14 foundation: repeatable HTTP benchmark runner
 - Phase 14 baseline: live API benchmark recorded in [docs/benchmark-results.md](docs/benchmark-results.md)
+- Phase 5/9: Compose stream processor connects Kafka, Redis, ML inference, and PostgreSQL
 - Next: end-to-end Kafka benchmark and optimization
 
 ## Quick start: transaction generator

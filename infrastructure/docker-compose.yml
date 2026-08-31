@@ -8,10 +8,30 @@ services:
     environment:
       DATABASE_URL: postgresql://fraudstream:fraudstream@postgres:5432/fraudstream
       REDIS_URL: redis://redis:6379/0
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      KAFKA_PUBLISH_ENABLED: "true"
     depends_on:
       postgres:
         condition: service_healthy
       redis:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+
+  stream-processor:
+    build:
+      context: ..
+      dockerfile: stream_processor/Dockerfile
+    environment:
+      DATABASE_URL: postgresql://fraudstream:fraudstream@postgres:5432/fraudstream
+      REDIS_URL: redis://redis:6379/0
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      kafka:
         condition: service_healthy
 
   frontend:

@@ -31,7 +31,7 @@ dev = [
 fraudstream-producer = "fraudstream_producer.__main__:main"
 
 [tool.setuptools.packages.find]
-where = ["producer", "backend", "ml"]
+where = ["producer", "backend", "stream_processor", "ml"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

@@ -21,6 +21,21 @@ DATABASE_URL = os.getenv(
 app = FastAPI(title="FraudStream API", version="0.1.0")
 transactions_channel = ConnectionManager()
 alerts_channel = ConnectionManager()
+_publisher = None
+
+
+def _publish_if_enabled(transaction: TransactionInput) -> None:
+    global _publisher
+    if os.getenv("KAFKA_PUBLISH_ENABLED", "false").lower() != "true":
+        return
+    if _publisher is None:
+        from fraudstream_producer.publisher import TransactionPublisher
+        _publisher = TransactionPublisher()
+    try:
+        from fraudstream_producer.models import Transaction
+        _publisher.publish(Transaction.model_validate(transaction.model_dump()))
+    except Exception as exc:
+        raise HTTPException(status_code=503, detail="event broker unavailable") from exc
 
 
 class MetricsMiddleware(BaseHTTPMiddleware):
@@ -89,6 +104,7 @@ def create_transaction(transaction: TransactionInput) -> dict[str, Any]:
         raise HTTPException(status_code=409, detail="transaction already exists") from exc
     except psycopg.Error as exc:
         raise HTTPException(status_code=503, detail="database unavailable") from exc
+    _publish_if_enabled(transaction)
     TRANSACTIONS.inc()
     return transaction.model_dump(mode="json")
 
