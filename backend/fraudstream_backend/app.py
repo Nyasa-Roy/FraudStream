@@ -12,7 +12,7 @@ from starlette.middleware.base import BaseHTTPMiddleware
 from pydantic import BaseModel, Field
 
 from .realtime import ConnectionManager
-from .metrics import LATENCY, REQUESTS, metrics_payload
+from .metrics import LATENCY, REQUESTS, TRANSACTIONS, metrics_payload
 
 DATABASE_URL = os.getenv(
     "DATABASE_URL", "postgresql://fraudstream:fraudstream@localhost:5432/fraudstream"
@@ -89,6 +89,7 @@ def create_transaction(transaction: TransactionInput) -> dict[str, Any]:
         raise HTTPException(status_code=409, detail="transaction already exists") from exc
     except psycopg.Error as exc:
         raise HTTPException(status_code=503, detail="database unavailable") from exc
+    TRANSACTIONS.inc()
     return transaction.model_dump(mode="json")
 
 

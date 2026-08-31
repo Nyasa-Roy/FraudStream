@@ -11,7 +11,7 @@ from concurrent.futures import ThreadPoolExecutor
 
 
 def post_transaction(base_url: str, index: int) -> float:
-    payload = json.dumps({"transaction_id": f"TXBENCH{index}", "user_id": "U0001",
+    payload = json.dumps({"transaction_id": f"TX{900000000 + index:09d}", "user_id": "U0001",
         "amount": 42.50, "merchant_id": "M0001", "merchant_category": "groceries",
         "location": "Sydney", "device_id": "D0001", "payment_method": "card",
         "timestamp": "2026-01-01T00:00:00Z"}).encode()
@@ -47,4 +47,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
