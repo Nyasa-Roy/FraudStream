@@ -17,7 +17,8 @@ The repository is being implemented incrementally according to the [full SRS](do
 - Phase 10: Isolation Forest anomaly detector
 - Phase 9/11: combined real-time inference and explainable risk decision
 - Phase 9/12 foundation: atomic prediction persistence and HIGH-risk alerts
-- Next: WebSocket delivery and dashboard integration
+- Phase 12 foundation: WebSocket transaction and alert channels
+- Next: Next.js dashboard and live subscriptions
 
 ## Quick start: transaction generator
 

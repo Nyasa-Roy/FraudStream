@@ -6,14 +6,18 @@ from decimal import Decimal
 from typing import Any
 
 import psycopg
-from fastapi import FastAPI, HTTPException, Query
+from fastapi import FastAPI, HTTPException, Query, WebSocket, WebSocketDisconnect
 from pydantic import BaseModel, Field
+
+from .realtime import ConnectionManager
 
 DATABASE_URL = os.getenv(
     "DATABASE_URL", "postgresql://fraudstream:fraudstream@localhost:5432/fraudstream"
 )
 
 app = FastAPI(title="FraudStream API", version="0.1.0")
+transactions_channel = ConnectionManager()
+alerts_channel = ConnectionManager()
 
 
 class TransactionInput(BaseModel):
@@ -126,3 +130,21 @@ def fraud_analytics() -> dict[str, Any]:
     return {"transaction_count": total, "alert_count": alerts,
             "risk_distribution": {level: count for level, count in levels}}
 
+
+async def _subscribe(websocket: WebSocket, manager: ConnectionManager) -> None:
+    await manager.connect(websocket)
+    try:
+        while True:
+            await websocket.receive_text()
+    except WebSocketDisconnect:
+        manager.disconnect(websocket)
+
+
+@app.websocket("/ws/transactions")
+async def transactions_websocket(websocket: WebSocket) -> None:
+    await _subscribe(websocket, transactions_channel)
+
+
+@app.websocket("/ws/alerts")
+async def alerts_websocket(websocket: WebSocket) -> None:
+    await _subscribe(websocket, alerts_channel)
