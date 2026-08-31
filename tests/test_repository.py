@@ -23,6 +23,15 @@ class FakeConnection:
     def fetchone(self):
         return self.alert_result
 
+    def commit(self):
+        pass
+
+    def rollback(self):
+        pass
+
+    def close(self):
+        pass
+
 
 def make_repository():
     connection = FakeConnection()
@@ -46,4 +55,3 @@ def test_creates_alert_for_high_risk():
     assessment = RiskEngine().assess(0.95, 0.9, {"amount_ratio": 12})
     assert repository.persist(transaction, assessment) is True
     assert "fraud_alerts" in connection.calls[-1][0]
-

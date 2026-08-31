@@ -15,13 +15,16 @@ class PredictionRepository:
 
     def __init__(self, connect: Callable[..., Any] | None = None) -> None:
         self.connect = connect or psycopg.connect
+        self._connection = None
 
     def persist(self, transaction: Transaction, assessment: RiskAssessment,
                 model_version: str = "unknown") -> bool:
         """Return True when a new HIGH-risk alert is created."""
-        with self.connect(os.getenv(
+        connection = self._connection or self.connect(os.getenv(
             "DATABASE_URL", "postgresql://fraudstream:fraudstream@localhost:5432/fraudstream"
-        )) as connection:
+        ))
+        self._connection = connection
+        try:
             connection.execute(
                 "INSERT INTO users (id) VALUES (%s) ON CONFLICT (id) DO NOTHING",
                 (transaction.user_id,),
@@ -53,6 +56,7 @@ class PredictionRepository:
                  __import__("json").dumps(assessment.reasons)),
             )
             if assessment.risk_level != "HIGH":
+                connection.commit()
                 return False
             result = connection.execute(
                 """INSERT INTO fraud_alerts (transaction_id, risk_score)
@@ -60,5 +64,13 @@ class PredictionRepository:
                 RETURNING id""",
                 (transaction.transaction_id, assessment.risk_score),
             ).fetchone()
+            connection.commit()
             return result is not None
+        except Exception:
+            connection.rollback()
+            raise
 
+    def close(self) -> None:
+        if self._connection is not None:
+            self._connection.close()
+            self._connection = None
