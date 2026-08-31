@@ -18,7 +18,8 @@ The repository is being implemented incrementally according to the [full SRS](do
 - Phase 9/11: combined real-time inference and explainable risk decision
 - Phase 9/12 foundation: atomic prediction persistence and HIGH-risk alerts
 - Phase 12 foundation: WebSocket transaction and alert channels
-- Next: Next.js dashboard and live subscriptions
+- Phase 4/12: Next.js live operations dashboard
+- Next: container integration, monitoring, and load testing
 
 ## Quick start: transaction generator
 
