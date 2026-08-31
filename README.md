@@ -10,7 +10,10 @@ The repository is being implemented incrementally according to the [full SRS](do
 - Phase 1: deterministic, configurable synthetic transaction generator
 - Phase 2: PostgreSQL schema and local Postgres/Redis services
 - Phase 3: FastAPI API for transactions, alerts, analytics, and health
-- Next: frontend dashboard and Kafka transport
+- Phase 5: Kafka transport and stream-processing worker
+- Phase 6: Redis-backed behavioural feature extraction
+- Phase 11 foundation: transparent weighted risk engine and explanations
+- Next: supervised/anomaly ML model training and inference persistence
 
 ## Quick start: transaction generator
 
