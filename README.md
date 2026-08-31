@@ -9,7 +9,8 @@ The repository is being implemented incrementally according to the [full SRS](do
 - Phase 0: repository structure and local configuration
 - Phase 1: deterministic, configurable synthetic transaction generator
 - Phase 2: PostgreSQL schema and local Postgres/Redis services
-- Next: FastAPI API
+- Phase 3: FastAPI API for transactions, alerts, analytics, and health
+- Next: frontend dashboard and Kafka transport
 
 ## Quick start: transaction generator
 
@@ -47,5 +48,6 @@ ruff check .
 ```
 
 Start local persistence services with `docker compose -f infrastructure/docker-compose.yml up -d`.
+Run the API with `uvicorn fraudstream_backend.app:app --app-dir backend --reload`.
 
 All data is synthetic; no real payment information is required or stored.

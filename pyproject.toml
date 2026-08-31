@@ -8,7 +8,9 @@ version = "0.1.0"
 description = "Synthetic real-time financial fraud detection platform"
 requires-python = ">=3.11"
 dependencies = [
+  "fastapi>=0.115,<1",
   "pydantic>=2.7,<3",
+  "psycopg[binary]>=3.2,<4",
 ]
 
 [project.optional-dependencies]
@@ -21,7 +23,7 @@ dev = [
 fraudstream-producer = "fraudstream_producer.__main__:main"
 
 [tool.setuptools.packages.find]
-where = ["producer"]
+where = ["producer", "backend"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -30,4 +32,3 @@ addopts = "-q"
 [tool.ruff]
 line-length = 100
 target-version = "py311"
-
